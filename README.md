@@ -1,4 +1,4 @@
-# confluence-to-gh-md
+# confluence-exporter-tool
 
 Convert Confluence Storage Format XML to GitHub Flavored Markdown (GFM).
 
