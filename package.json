@@ -4,13 +4,19 @@
   "description": "Convert full Confluence Storage Format XML to GitHub Markdown for Foam",
   "main": "bin/index.js",
   "bin": {
-    "confluence-exporter-tool": "bin/index.js"
+    "confluence-exporter-tool": "bin/confluence-exporter-tool.js"
   },
   "type": "module",
   "scripts": {
     "start": "node bin/index.js",
     "test": "jest"
   },
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "keywords": ["confluence", "markdown", "docs-as-code", "documentation", "shelljs", "code", "cli", "dx", "developer", "tool"],
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.3",

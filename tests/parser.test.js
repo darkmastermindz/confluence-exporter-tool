@@ -1,4 +1,4 @@
-const convertXMLToMarkdown = require('../lib/parser');
+import { convertXMLToMarkdown } from '../lib/parser.js'; 
 const fs = require('fs');
 const path = require('path');
 
