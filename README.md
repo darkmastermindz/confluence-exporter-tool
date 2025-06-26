@@ -25,7 +25,7 @@ node bin/index.js --input <path-to-confluence-xml> [--output <output-md-file>]
 Or, if installed globally:
 
 ```bash
-confluence-to-foam --input <path-to-confluence-xml> [--output <output-md-file>]
+confluence-exporter-tool --input <path-to-confluence-xml> [--output <output-md-file>]
 ```
 
 - `--input` (required): Path to the Confluence XML file.
