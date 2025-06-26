@@ -12,7 +12,7 @@ Clone this repository and install dependencies:
 
 ```bash
 git clone <repo-url>
-cd confluence-to-gh-md
+cd confluence-exporter-tool
 npm install
 ```
 
