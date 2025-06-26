@@ -1,0 +1,19 @@
+{
+  "name": "confluence-to-foam-full",
+  "version": "0.0.1-snapshot",
+  "description": "Convert full Confluence Storage Format XML to GitHub Markdown for Foam",
+  "main": "bin/index.js",
+  "bin": {
+    "confluence-to-foam": "bin/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node bin/index.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "chalk": "^5.3.0",
+    "commander": "^11.0.0"
+  }
+}

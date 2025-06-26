@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:ac="http://atlassian.com/content" xmlns:ri="http://atlassian.com/resource/identifier" xmlns:at="http://atlassian.com/template">
+  <h1>Heading 1</h1>
+  <h2>Heading 2</h2>
+  <h3>Heading 3</h3>
+  <h4>Heading 4</h4>
+  <strong>bold text</strong>
+  <em>italic text</em>
+  <span style="text-decoration: line-through;">strikethrough</span>
+  <u>underline</u>
+  <sup>superscript</sup>
+  <sub>subscript</sub>
+  <code>monospaced</code>
+  <pre>preformatted</pre>
+  <blockquote><p>quote</p></blockquote>
+  <span style="color: rgb(255,0,0);">red text</span>
+  <small>small text</small>
+  <big>big text</big>
+  <p style="text-align: center;">centered</p>
+  <p style="text-align: right;">right aligned</p>
+  <p>Paragraph 1</p>
+  <p>Paragraph 2</p>
+  Line 1<br />Line 2
+  <hr />
+  <ul><li>unordered</li></ul>
+  <ol><li>ordered</li></ol>
+  <ac:task-list>
+    <ac:task>
+      <ac:task-status>incomplete</ac:task-status>
+      <ac:task-body>task list item</ac:task-body>
+    </ac:task>
+  </ac:task-list>
+  <ac:link>
+    <ri:page ri:content-title="Page Title" />
+    <ac:plain-text-link-body><![CDATA[Link to Page]]></ac:plain-text-link-body>
+  </ac:link>
+  <ac:link>
+    <ri:attachment ri:filename="file.pdf" />
+    <ac:plain-text-link-body><![CDATA[Attachment]]></ac:plain-text-link-body>
+  </ac:link>
+  <a href="http://example.com">External</a>
+  <ac:link ac:anchor="anchor"><ac:plain-text-link-body><![CDATA[Anchor]]></ac:plain-text-link-body></ac:link>
+  <ac:link ac:anchor="anchor">
+    <ri:page ri:content-title="Other Page"/>
+    <ac:plain-text-link-body><![CDATA[Anchor Link]]></ac:plain-text-link-body>
+  </ac:link>
+  <ac:link ac:anchor="link">
+    <ac:link-body><ac:image><ri:url ri:value="http://example.com/image.png"/></ac:image></ac:link-body>
+  </ac:link>
+  <ac:link>
+    <ri:page ri:content-title="Home" ri:space-key="SPACE" />
+    <ac:link-body>Some <strong>Rich</strong> Text</ac:link-body>
+  </ac:link>
+  <ac:image><ri:attachment ri:filename="logo.gif"/></ac:image>
+  <ac:image><ri:url ri:value="http://example.com/logo.png"/></ac:image>
+  <table>
+    <tr><th>Header 1</th><th>Header 2</th></tr>
+    <tr><td>Cell 1</td><td>Cell 2</td></tr>
+  </table>
+  <table>
+    <tr><th>H1</th><th>H2</th></tr>
+    <tr><td rowspan="2">Merged</td><td>C1</td></tr>
+    <tr><td>C2</td></tr>
+  </table>
+  <ac:layout>
+    <ac:layout-section ac:type="single">
+      <ac:layout-cell><p>Single cell</p></ac:layout-cell>
+    </ac:layout-section>
+    <ac:layout-section ac:type="three_with_sidebars">
+      <ac:layout-cell><p>Left</p></ac:layout-cell>
+      <ac:layout-cell><p>Middle</p></ac:layout-cell>
+      <ac:layout-cell><p>Right</p></ac:layout-cell>
+    </ac:layout-section>
+  </ac:layout>
+  <ac:emoticon ac:name="smile"/>
+  <ac:emoticon ac:name="thumbs-up"/>
+  <ri:page ri:space-key="FOO" ri:content-title="Test Page"/>
+  <ri:blog-post ri:space-key="FOO" ri:content-title="First Post" ri:posting-day="2012/01/30" />
+  <ri:attachment ri:filename="happy.gif"><ri:page ri:space-key="TST" ri:content-title="Test Page"/></ri:attachment>
+  <ri:url ri:value="http://example.org/sample.gif"/>
+  <ri:shortcut ri:key="jira" ri:parameter="ABC-123"/>
+  <ri:user ri:userkey="abcd1234"/>
+  <ri:space ri:space-key="TST"/>
+  <ri:content-entity ri:content-id="123"/>
+  <at:declarations>
+    <at:string at:name="MyText" />
+    <at:textarea at:columns="100" at:name="MyMulti" at:rows="5" />
+    <at:list at:name="MyList">
+      <at:option at:value="Apples" />
+      <at:option at:value="Pears" />
+      <at:option at:value="Peaches" />
+    </at:list>
+  </at:declarations>
+  <p>A single-line text variable: <at:var at:name="MyText" /></p>
+  <p>A multi-line text variable: <at:var at:name="MyMulti" /></p>
+  <p>A selection list: <at:var at:name="MyList" /></p>
+  <ul><li><ac:placeholder>This is instructional text.</ac:placeholder></li></ul>
+  <ac:task-list>
+    <ac:task>
+      <ac:task-status>incomplete</ac:task-status>
+      <ac:task-body><ac:placeholder ac:type="mention">@mention instruction</ac:placeholder></ac:task-body>
+    </ac:task>
+  </ac:task-list>
+</root>
