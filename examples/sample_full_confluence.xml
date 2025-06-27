@@ -101,4 +101,33 @@
       <ac:task-body><ac:placeholder ac:type="mention">@mention instruction</ac:placeholder></ac:task-body>
     </ac:task>
   </ac:task-list>
+  <!-- Subscript and Superscript -->
+  <p>Chemical: H<sub>2</sub>O, Physics: E = mc<sup>2</sup></p>
+  <!-- Strikethrough -->
+  <span style="text-decoration: line-through;">strike this text</span>
+  <!-- Underline -->
+  <u>this is underlined</u>
+  <!-- Monospace and Preformatted -->
+  <code>inline monospace</code>
+  <pre>
+preformatted
+block
+  </pre>
+  <!-- Color spans -->
+  <span style="color: red;">red text</span>
+  <!-- Small and Big -->
+  <small>tiny text</small>
+  <big>huge text</big>
+  <!-- Line breaks -->
+  line1<br />line2
+  <!-- External link -->
+  <a href="https://github.com/">GitHub</a>
+  <!-- Advanced image (external URL) -->
+  <ac:image><ri:url ri:value="http://img.com/x.png" /></ac:image>
+  <!-- Layouts -->
+  <ac:layout>
+    <ac:layout-section ac:type="single">
+      <ac:layout-cell>Layout cell content</ac:layout-cell>
+    </ac:layout-section>
+  </ac:layout>
 </root>

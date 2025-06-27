@@ -84,4 +84,47 @@ describe('convertXMLToMarkdown', () => {
     const xml = '<hr />';
     expect(convertXMLToMarkdown(xml)).toContain('---');
   });
+
+  it('converts subscript and superscript', () => {
+    expect(convertXMLToMarkdown('H<sub>2</sub>O')).toContain('H~2~O');
+    expect(convertXMLToMarkdown('E = mc<sup>2</sup>')).toContain('E = mc^2^');
+  });
+
+  it('converts strikethrough', () => {
+    expect(convertXMLToMarkdown('<span style="text-decoration: line-through;">strike</span>')).toContain('~~strike~~');
+  });
+
+  it('converts underline', () => {
+    expect(convertXMLToMarkdown('<u>underline</u>')).toContain('<ins>underline</ins>'); // or custom handling
+  });
+
+  it('converts monospace and preformatted', () => {
+    expect(convertXMLToMarkdown('<code>mono</code>')).toContain('`mono`');
+    expect(convertXMLToMarkdown('<pre>preformatted</pre>')).toContain('```\npreformatted\n```');
+  });
+
+  it('converts color spans', () => {
+    expect(convertXMLToMarkdown('<span style="color: red;">red</span>')).toContain('red');
+  });
+
+  it('converts small and big', () => {
+    expect(convertXMLToMarkdown('<small>small</small>')).toContain('small');
+    expect(convertXMLToMarkdown('<big>big</big>')).toContain('big');
+  });
+
+  it('converts line breaks', () => {
+    expect(convertXMLToMarkdown('line1<br />line2')).toContain('line1  \nline2');
+  });
+
+  it('converts external links', () => {
+    expect(convertXMLToMarkdown('<a href="http://example.com">Example</a>')).toContain('[Example](http://example.com)');
+  });
+
+  it('converts advanced images', () => {
+    expect(convertXMLToMarkdown('<ac:image><ri:url ri:value="http://img.com/x.png" /></ac:image>')).toContain('![](http://img.com/x.png)');
+  });
+
+  it('converts layouts', () => {
+    expect(convertXMLToMarkdown('<ac:layout><ac:layout-section><ac:layout-cell>Cell</ac:layout-cell></ac:layout-section></ac:layout>')).toContain('Cell');
+  });
 });
