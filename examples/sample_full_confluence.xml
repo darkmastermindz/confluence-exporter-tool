@@ -130,4 +130,12 @@ block
       <ac:layout-cell>Layout cell content</ac:layout-cell>
     </ac:layout-section>
   </ac:layout>
+  <!-- Common HTML entities and quotes -->
+  <p>Double quote: &quot;Hello&quot;</p>
+  <p>Single quote: &apos;Hello&apos;</p>
+  <p>Less than: &lt;tag&gt;</p>
+  <p>Greater than: &gt;tag&lt;</p>
+  <p>Ampersand: Tom &amp; Jerry</p>
+  <p>Non-breaking space: Hello&nbsp;World</p>
+  <p>Mixed: &quot;Tom &amp; Jerry&quot; &lt;cartoon&gt;</p>
 </root>

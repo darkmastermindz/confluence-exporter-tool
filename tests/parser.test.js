@@ -127,4 +127,14 @@ describe('convertXMLToMarkdown', () => {
   it('converts layouts', () => {
     expect(convertXMLToMarkdown('<ac:layout><ac:layout-section><ac:layout-cell>Cell</ac:layout-cell></ac:layout-section></ac:layout>')).toContain('Cell');
   });
+
+  it('converts HTML entities like &quot;', () => {
+    expect(convertXMLToMarkdown('He said &quot;Hello&quot;')).toContain('He said "Hello"');
+    expect(convertXMLToMarkdown('It\'s &apos;quoted&apos;')).toContain("It's 'quoted'");
+    expect(convertXMLToMarkdown('Less than: &lt;tag&gt;')).toContain('Less than: <tag>');
+    expect(convertXMLToMarkdown('Greater than: &gt;tag&lt;')).toContain('Greater than: >tag<');
+    expect(convertXMLToMarkdown('Ampersand: Tom &amp; Jerry')).toContain('Ampersand: Tom & Jerry');
+    expect(convertXMLToMarkdown('Non-breaking space: Hello&nbsp;World')).toContain('Non-breaking space: Hello World');
+    expect(convertXMLToMarkdown('Mixed: &quot;Tom &amp; Jerry&quot; &lt;cartoon&gt;')).toContain('Mixed: "Tom & Jerry" <cartoon>');
+  });
 });
