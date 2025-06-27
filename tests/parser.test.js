@@ -60,6 +60,14 @@ describe('convertXMLToMarkdown', () => {
     expect(md).toContain('1. item2');
   });
 
+  it('converts ordered lists with sequential numbers', () => {
+    const xml = '<ol><li>first</li><li>second</li><li>third</li></ol>';
+    const md = convertXMLToMarkdown(xml).split('\n').filter(line => line.trim().match(/^\d+\./));
+    expect(md[0]).toContain('1. first');
+    expect(md[1]).toContain('2. second');
+    expect(md[2]).toContain('3. third');
+  });
+
   it('converts paragraphs', () => {
     const xml = '<p>para</p>';
     expect(convertXMLToMarkdown(xml)).toContain('para');

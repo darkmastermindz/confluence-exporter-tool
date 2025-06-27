@@ -138,4 +138,20 @@ block
   <p>Ampersand: Tom &amp; Jerry</p>
   <p>Non-breaking space: Hello&nbsp;World</p>
   <p>Mixed: &quot;Tom &amp; Jerry&quot; &lt;cartoon&gt;</p>
+  <!-- Ordered list with five items for sequential numbering -->
+  <ol>
+    <li>First item</li>
+    <li>Second item</li>
+    <li>Third item</li>
+    <li>Fourth item</li>
+    <li>Fifth item</li>
+  </ol>
+  <!-- Unordered list with five items for dash bullets -->
+  <ul>
+    <li>Apple</li>
+    <li>Banana</li>
+    <li>Cherry</li>
+    <li>Date</li>
+    <li>Elderberry</li>
+  </ul>
 </root>
