@@ -62,7 +62,16 @@ async function main() {
     const inputIndex = args.indexOf(inputArg);
     const outputIndex = args.indexOf(outputArg);
     const inputPath = (inputIndex !== -1 && args[inputIndex + 1]) ? path.resolve(process.cwd(), args[inputIndex + 1]) : null;
-    const outputPath = (outputIndex !== -1 && args[outputIndex + 1]) ? path.resolve(process.cwd(), args[outputIndex + 1]) : path.resolve(process.cwd(), 'output/output.md');
+    let outputPath;
+    if (outputIndex !== -1 && args[outputIndex + 1]) {
+        outputPath = path.resolve(process.cwd(), args[outputIndex + 1]);
+    } else if (inputPath) {
+        // Use original input filename, change extension to .md, and put in output/ directory
+        const originalName = path.basename(inputPath, path.extname(inputPath)) + '.md';
+        outputPath = path.resolve(process.cwd(), 'output', originalName);
+    } else {
+        outputPath = path.resolve(process.cwd(), 'output/output.md');
+    }
 
     if (!inputPath) {
         console.error(format.error('Error: --input <input.xml> is required.'));
