@@ -1,24 +1,12 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { program } from 'commander';
+
 import chalk from 'chalk';
 import convertFile from '../src/index.js';
 import { readFile } from 'fs/promises';
 import { resolve } from 'path';
-
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import path from 'path';
 
 const args = process.argv.slice(2);
-
-async function loadPackageJson() {
-    const packageJsonPath = resolve(process.cwd(), 'package.json');
-    const packageJson = await readFile(packageJsonPath, 'utf-8');
-    return JSON.parse(packageJson);
-}
 
 const format = {
     usage: chalk.bold.cyan,
@@ -34,38 +22,64 @@ const format = {
     file: chalk.cyan.bold,
 };
 
-program
-  .name('confluence-to-foam')
-  .description('Convert Confluence Storage Format XML to GitHub Markdown for Foam')
-  .requiredOption('-i, --input <path>', 'Path to Confluence XML file')
-  .option('-o, --output <path>', 'Output markdown file', './output/output.md')
-  .option('--silent', 'Suppress output messages. When this flag is used, the tool will run without logging any success or error messages.')
-  .addHelpText('after', `\n${format.example('Examples:')}\n  ${format.example('confluence-to-foam -i input.xml -o output.md')}\n  ${format.example('confluence-to-foam --input data.xml --silent')}\n`);
+// Utility functions
+const logSuccess = (message) => console.log(format.success(`✅ ${message}`));
+const logError = (message) => console.log(format.error(`❌ ${message}`));
+const logInfo = (message) => console.log(format.info(`ℹ️ ${message}`));
 
-program.parse(args);
-
-const options = program.opts();
-
-if (!options.silent) {
-  console.log(`\n${format.usage('Options:')}`);
-  console.log(`  ${format.option('--help')}          Show this help message and exit.`);
-  console.log(`  ${format.option('--version')}       Show the tool's version and exit.`);
-  console.log(`  ${format.option('--silent')}        Suppress output messages. When this flag is used, the tool will run without logging any\n                      success or error messages.`);
+async function loadPackageJson() {
+    const packageJsonPath = resolve(process.cwd(), 'package.json');
+    const packageJson = await readFile(packageJsonPath, 'utf-8');
+    return JSON.parse(packageJson);
 }
 
-const inputPath = path.resolve(__dirname, '..', options.input);
-const outputPath = path.resolve(__dirname, '..', options.output);
+async function main() {
+    if (args.includes('--help')) {
+        console.log(`\n${format.usage('Usage:')} ${format.action('confluence-exporter-tool')} --input <input.xml> [--output <output.md>] [--silent]\n`);
+        console.log(format.description('Description:'));
+        console.log('  Convert Confluence Storage Format XML to GitHub Markdown for Foam.');
+        console.log(`\n${format.usage('Options:')}`);
+        console.log(`  ${format.option('--help')}          Show this help message and exit.`);
+        console.log(`  ${format.option('--version')}       Show the tool's version and exit.`);
+        console.log(`  ${format.option('--input')}         Path to Confluence XML file (required).`);
+        console.log(`  ${format.option('--output')}        Output markdown file. Defaults to './output/output.md'.`);
+        console.log(`  ${format.option('--silent')}        Suppress output messages. When this flag is used, the tool will run without logging any\n                      success or error messages.`);
+        console.log(`\n${format.usage('Examples:')}`);
+        console.log(`  ${format.example('confluence-exporter-tool --input input.xml --output output.md')}`);
+        console.log(`  ${format.example('confluence-exporter-tool --input data.xml --silent')}`);
+        process.exit(0);
+    }
 
-(async () => {
-  try {
-    await convertFile(inputPath, outputPath, { silent: options.silent });
-    if (!options.silent) {
-      console.log(chalk.green(`✅ Markdown saved to ${options.output}`));
+    if (args.includes('--version')) {
+        const pkg = await loadPackageJson();
+        console.log(`${format.action('confluence-exporter-tool')} version ${format.highlight(pkg.version)}`);
+        process.exit(0);
     }
-  } catch (err) {
-    if (!options.silent) {
-      console.error(chalk.red(`❌ Error: ${err.message}`));
+
+    const silent = args.includes('--silent');
+    let inputArg = args.find(arg => arg === '--input' || arg === '-i');
+    let outputArg = args.find(arg => arg === '--output' || arg === '-o');
+    const inputIndex = args.indexOf(inputArg);
+    const outputIndex = args.indexOf(outputArg);
+    const inputPath = (inputIndex !== -1 && args[inputIndex + 1]) ? path.resolve(process.cwd(), args[inputIndex + 1]) : null;
+    const outputPath = (outputIndex !== -1 && args[outputIndex + 1]) ? path.resolve(process.cwd(), args[outputIndex + 1]) : path.resolve(process.cwd(), 'output/output.md');
+
+    if (!inputPath) {
+        console.error(format.error('Error: --input <input.xml> is required.'));
+        process.exit(1);
     }
-    process.exit(1);
-  }
-})();
+
+    try {
+        await convertFile(inputPath, outputPath, { silent });
+        if (!silent) {
+            console.log(format.success(`✅ Markdown saved to ${outputPath}`));
+        }
+    } catch (err) {
+        if (!silent) {
+            console.error(format.error(`❌ Error: ${err.message}`));
+        }
+        process.exit(1);
+    }
+}
+
+main();

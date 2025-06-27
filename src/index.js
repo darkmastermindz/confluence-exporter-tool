@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import path from 'path';
 import { convertXMLToMarkdown } from '../lib/parser.js';
 
 
@@ -11,7 +12,7 @@ export async function convertFile(inputPath, outputPath, options = {}) {
         }
         const xml = await fs.readFile(inputPath, 'utf-8');
         const markdown = convertXMLToMarkdown(xml);
-        await fs.ensureDir(fs.dirname(outputPath));
+        await fs.ensureDir(path.dirname(outputPath));
         await fs.writeFile(outputPath, markdown, 'utf-8');
         if (!silent) {
             console.log(`Converted ${inputPath} to ${outputPath}`);
