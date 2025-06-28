@@ -1,9 +1,9 @@
 # confluence-exporter-tool
 
-Convert Confluence Storage Format XML to GitHub Flavored Markdown (GFM).
+Convert Confluence Storage Format XHTML to GitHub Flavored Markdown (GFM).
 
 ## Features
-- Converts Confluence XML (Storage Format) to GitHub Markdown for use in Foam or other Markdown-based tools.
+- Converts [Confluence Storage Format](https://confluence.atlassian.com/doc/confluence-storage-format-790796544.html) to [GitHub Flavored Markdown](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax) for use in Foam or other Markdown-based tools.
 - Handles headings, lists, formatting, code blocks, macros, attachments, and more.
 
 ## Installation

@@ -74,7 +74,7 @@ async function main() {
     }
 
     if (!inputPath) {
-        console.error(format.error('Error: --input <input.xml> is required.'));
+        console.error(format.error('Error: --input <input.xhtml> is required.'));
         process.exit(1);
     }
 

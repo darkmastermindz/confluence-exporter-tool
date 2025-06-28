@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { convertXMLToMarkdown } from '../lib/parser.js';
+import { convertXMLToMarkdown as convertXHTMLtoMarkdown } from '../lib/parser.js';
 
 
 
@@ -10,8 +10,8 @@ export async function convertFile(inputPath, outputPath, options = {}) {
         if (!fs.existsSync(inputPath)) {
             throw new Error(`File not found: ${inputPath}`);
         }
-        const xml = await fs.readFile(inputPath, 'utf-8');
-        const markdown = convertXMLToMarkdown(xml);
+        const xhtml = await fs.readFile(inputPath, 'utf-8');
+        const markdown = convertXHTMLtoMarkdown(xhtml);
         await fs.ensureDir(path.dirname(outputPath));
         await fs.writeFile(outputPath, markdown, 'utf-8');
         if (!silent) {
