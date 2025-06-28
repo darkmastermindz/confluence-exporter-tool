@@ -1,6 +1,6 @@
 {
   "name": "confluence-exporter-tool",
-  "version": "v1.0.4-snapshot",
+  "version": "v1.0.4",
   "description": "Convert full Confluence Storage Format XHTML to GitHub Markdown for Foam",
   "main": "src/index.js",
   "bin": {
