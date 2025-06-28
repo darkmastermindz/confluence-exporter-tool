@@ -145,4 +145,11 @@ describe('convertXMLToMarkdown', () => {
     expect(convertXMLToMarkdown('Non-breaking space: Hello&nbsp;World')).toContain('Non-breaking space: Hello World');
     expect(convertXMLToMarkdown('Mixed: &quot;Tom &amp; Jerry&quot; &lt;cartoon&gt;')).toContain('Mixed: "Tom & Jerry" <cartoon>');
   });
+
+  it('converts pre/code blocks with proper formatting', () => {
+    expect(convertXMLToMarkdown('<pre>pre block</pre>')).toContain('```\npre block\n```');
+    expect(convertXMLToMarkdown('<pre>  indented\nblock\n</pre>')).toContain('```\nindented\nblock\n```');
+    expect(convertXMLToMarkdown('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[console.log(42);]]></ac:plain-text-body><ac:parameter ac:name="language">js</ac:parameter></ac:structured-macro>')).toContain('```js\nconsole.log(42);\n```');
+    expect(convertXMLToMarkdown('<code>inline</code>')).toContain('`inline`');
+  });
 });
