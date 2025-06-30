@@ -78,8 +78,16 @@ async function main() {
         process.exit(1);
     }
 
+    // Parse --autolint option
+    let autolint = true;
+    const autolintIndex = args.findIndex(arg => arg === '--autolint');
+    if (autolintIndex !== -1) {
+        const val = args[autolintIndex + 1];
+        if (val && val.toLowerCase() === 'false') autolint = false;
+    }
+
     try {
-        await convertFile(inputPath, outputPath, { silent });
+        await convertFile(inputPath, outputPath, { silent, autolint });
         if (!silent) {
             console.log(format.success(`✅ Markdown saved to ${outputPath}`));
         }

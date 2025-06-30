@@ -48,6 +48,25 @@ describe('convertXMLToMarkdown', () => {
     expect(md).toContain('| D |');
   });
 
+  it('converts XHTML tables to markdown', () => {
+    const xml = `
+      <table>
+        <thead>
+          <tr><th>Header 1</th><th>Header 2</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Cell 1</td><td>Cell 2</td></tr>
+          <tr><td>Cell 3</td><td>Cell 4</td></tr>
+        </tbody>
+      </table>
+    `;
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('| Header 1 | Header 2 |');
+    expect(md).toContain('| --- | --- |');
+    expect(md).toContain('| Cell 1 | Cell 2 |');
+    expect(md).toContain('| Cell 3 | Cell 4 |');
+  });
+
   it('converts blockquotes', () => {
     const xml = '<blockquote><p>quote</p></blockquote>';
     expect(convertXMLToMarkdown(xml)).toContain('> quote');
@@ -151,5 +170,92 @@ describe('convertXMLToMarkdown', () => {
     expect(convertXMLToMarkdown('<pre>  indented\nblock\n</pre>')).toContain('```\nindented\nblock\n```');
     expect(convertXMLToMarkdown('<ac:structured-macro ac:name="code"><ac:plain-text-body><![CDATA[console.log(42);]]></ac:plain-text-body><ac:parameter ac:name="language">js</ac:parameter></ac:structured-macro>')).toContain('```js\nconsole.log(42);\n```');
     expect(convertXMLToMarkdown('<code>inline</code>')).toContain('`inline`');
+  });
+
+  it('handles tables with colgroup/col and missing columns', () => {
+    const xml = `
+      <table>
+        <colgroup><col/><col/><col/></colgroup>
+        <tr><th>H1</th><th>H2</th><th>H3</th></tr>
+        <tr><td>D1</td><td>D2</td></tr>
+        <tr><td>D3</td><td>D4</td><td>D5</td></tr>
+      </table>
+    `;
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('| H1 | H2 | H3 |');
+    expect(md).toContain('| --- | --- | --- |');
+    expect(md).toContain('| D1 | D2 |   |'); // padded
+    expect(md).toContain('| D3 | D4 | D5 |');
+  });
+
+  it('converts <ac:link ac:anchor> to markdown jump links', () => {
+    const xml = '<ac:link ac:anchor="section-2">Jump to Section 2</ac:link>';
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('[Jump to Section 2](#section-2)');
+  });
+
+  it('converts <ac:link ac:anchor> with plain-text-link-body to markdown jump links and normalizes anchor', () => {
+    const xml = '<ac:link ac:anchor="Section 2"><ac:plain-text-link-body><![CDATA[Jump to Section 2]]></ac:plain-text-link-body></ac:link>';
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('[Jump to Section 2](#section-2)');
+  });
+
+  it('converts <ac:link ac:anchor> with no plain-text-link-body to markdown jump links and normalizes anchor', () => {
+    const xml = '<ac:link ac:anchor="My Anchor">Go!</ac:link>';
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('[Go!](#my-anchor)');
+  });
+
+  it('converts <ac:link ac:anchor> with no inner text to anchor as text', () => {
+    const xml = '<ac:link ac:anchor="My Anchor"></ac:link>';
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('[my-anchor](#my-anchor)');
+  });
+
+  it('removes consecutive duplicate headings by default (autolint on)', () => {
+    const xml = '<h1>Title</h1><h1>Title</h1><h2>Sub</h2><h2>Sub</h2><h2>Sub</h2>';
+    const md = convertXMLToMarkdown(xml); // default autolint true
+    // Only one of each heading should remain
+    expect(md.match(/^# Title$/gm)?.length || 0).toBe(1);
+    expect(md.match(/^## Sub$/gm)?.length || 0).toBe(1);
+  });
+
+  it('keeps consecutive duplicate headings if autolint is false', () => {
+    const xml = '<h1>Title</h1><h1>Title</h1><h2>Sub</h2><h2>Sub</h2>';
+    let md = convertXMLToMarkdown(xml, { autolint: false });
+    // Both headings should appear twice
+    expect(md.match(/^# Title$/gm)?.length || 0).toBe(2);
+    expect(md.match(/^## Sub$/gm)?.length || 0).toBe(2);
+  });
+
+  it('handles tables with class and colgroup/col', () => {
+    const xml = `
+      <table class="wrapped">
+        <colgroup><col /><col /><col /></colgroup>
+        <tr><th>Col1</th><th>Col2</th><th>Col3</th></tr>
+        <tr><td>A</td><td>B</td></tr>
+        <tr><td>C</td><td>D</td><td>E</td></tr>
+      </table>
+    `;
+    const md = convertXMLToMarkdown(xml);
+    expect(md).toContain('| Col1 | Col2 | Col3 |');
+    expect(md).toContain('| --- | --- | --- |');
+    expect(md).toContain('| A | B |   |'); // padded
+    expect(md).toContain('| C | D | E |');
+  });
+
+  it('converts generic HTML tables to markdown', () => {
+    const html = `
+      <table>
+        <tr><th>HTML H1</th><th>HTML H2</th></tr>
+        <tr><td>Cell 1</td><td>Cell 2</td></tr>
+        <tr><td>Cell 3</td><td>Cell 4</td></tr>
+      </table>
+    `;
+    const md = convertXMLToMarkdown(html);
+    expect(md).toContain('| HTML H1 | HTML H2 |');
+    expect(md).toContain('| --- | --- |');
+    expect(md).toContain('| Cell 1 | Cell 2 |');
+    expect(md).toContain('| Cell 3 | Cell 4 |');
   });
 });
